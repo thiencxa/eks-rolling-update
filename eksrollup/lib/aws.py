@@ -18,7 +18,7 @@ def get_asgs(cluster_tag):
     page_iterator = paginator.paginate(
         PaginationConfig={'PageSize': 100}
     )
-    asg_query = "AutoScalingGroups[] | [?contains(Tags[?Key==`kubernetes.io/cluster/{}`].Value, `owned`)]".format(cluster_tag)
+    asg_query = "AutoScalingGroups[] | [?contains(Tags[?Key==`kubernetes.io/cluster/{}`].Value, `owned`)] | [?contains(Tags[?Key==`Name`].Value, `{}-spot-general-0-eks_asg`)]".format(cluster_tag, cluster_tag)
     # filter for only asgs with kube cluster tags
     filtered_asgs = page_iterator.search(asg_query)
     return filtered_asgs
